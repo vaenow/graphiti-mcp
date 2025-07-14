@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
     software-properties-common \
-    openjdk-11-jre \
+    default-jre \
     && rm -rf /var/lib/apt/lists/*
 
 # 安装 Neo4j
