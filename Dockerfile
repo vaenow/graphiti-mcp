@@ -28,8 +28,8 @@ RUN wget -O - https://debian.neo4j.com/neotechnology.gpg.key | gpg --dearmor -o 
 RUN mkdir -p /var/lib/neo4j/data /var/lib/neo4j/logs /var/lib/neo4j/import /var/lib/neo4j/plugins \
     && chown -R neo4j:neo4j /var/lib/neo4j
 
-# 复制 Neo4j 配置文件（如果需要自定义配置）
-COPY neo4j.conf /etc/neo4j/ 2>/dev/null || echo "No custom Neo4j config found, using defaults"
+# Neo4j 配置可以通过环境变量或挂载卷来自定义
+# 如需自定义配置，运行时使用: -v $(pwd)/neo4j.conf:/etc/neo4j/neo4j.conf
 
 # 安装 Python 依赖
 RUN pip install --no-cache-dir \
