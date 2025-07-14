@@ -4,8 +4,8 @@ A comprehensive Docker deployment solution for [Graphiti](https://github.com/get
 
 [中文文档](README-CN.md) | **English**
 
-[![Docker Build](https://github.com/USERNAME/REPO/actions/workflows/docker-build.yml/badge.svg)](https://github.com/USERNAME/REPO/actions/workflows/docker-build.yml)
-[![Docker Image](https://img.shields.io/badge/docker-ghcr.io-blue.svg)](https://ghcr.io/USERNAME/REPO)
+[![Docker Build](https://github.com/vaenow/graphiti-mcp/actions/workflows/docker-build.yml/badge.svg)](https://github.com/vaenow/graphiti-mcp/actions/workflows/docker-build.yml)
+[![Docker Image](https://img.shields.io/badge/docker-ghcr.io-blue.svg)](https://ghcr.io/vaenow/graphiti-mcp)
 
 ## 📋 Prerequisites
 
@@ -29,7 +29,7 @@ docker run -d \
   -p 7687:7687 \
   -p 8000:8000 \
   -e OPENAI_API_KEY=$OPENAI_API_KEY \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### Option 2: Build from Source
@@ -66,9 +66,9 @@ docker run -d \
 
 We automatically build and publish multi-architecture Docker images to GitHub Container Registry:
 
-- **Latest stable**: `ghcr.io/USERNAME/REPO:latest`
-- **Specific version**: `ghcr.io/USERNAME/REPO:v1.0.0`
-- **Development**: `ghcr.io/USERNAME/REPO:main`
+- **Latest stable**: `ghcr.io/vaenow/graphiti-mcp:latest`
+- **Specific version**: `ghcr.io/vaenow/graphiti-mcp:v1.0.0`
+- **Development**: `ghcr.io/vaenow/graphiti-mcp:main`
 
 ### Supported Architectures
 - `linux/amd64` (x86_64)
@@ -110,7 +110,7 @@ docker run -d \
   -p 7687:7687 \
   -p 8000:8000 \
   -e OPENAI_API_KEY=your_openai_api_key_here \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### Development Mode (Mount Code Directory)
@@ -122,7 +122,7 @@ docker run -d \
   -p 8000:8000 \
   -v $(pwd):/app \
   -e OPENAI_API_KEY=your_openai_api_key_here \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### Data Persistence
@@ -135,7 +135,7 @@ docker run -d \
   -v graphiti_data:/var/lib/neo4j/data \
   -v graphiti_logs:/var/lib/neo4j/logs \
   -e OPENAI_API_KEY=your_openai_api_key_here \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### Production Deployment with Docker Compose
@@ -143,7 +143,7 @@ docker run -d \
 version: '3.8'
 services:
   graphiti:
-    image: ghcr.io/USERNAME/REPO:latest
+    image: ghcr.io/vaenow/graphiti-mcp:latest
     container_name: graphiti-app
     ports:
       - "7474:7474"
@@ -197,7 +197,7 @@ To customize Neo4j configuration:
      -p 8000:8000 \
      -v $(pwd)/neo4j.conf:/etc/neo4j/neo4j.conf \
      -e OPENAI_API_KEY=your_openai_api_key_here \
-     ghcr.io/USERNAME/REPO:latest
+     ghcr.io/vaenow/graphiti-mcp:latest
    ```
 
 ### Application Code
@@ -221,7 +221,7 @@ docker run -d \
   -e NEO4J_dbms_memory_pagecache_size=2G \
   -e NEO4J_dbms_memory_heap_initial__size=2G \
   -e NEO4J_dbms_memory_heap_max__size=2G \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ## 🔍 Troubleshooting
@@ -247,10 +247,10 @@ docker run -d \
 4. **Image pull errors**
    ```bash
    # Try pulling the image explicitly
-   docker pull ghcr.io/USERNAME/REPO:latest
+   docker pull ghcr.io/vaenow/graphiti-mcp:latest
    
    # Or use a specific version
-   docker pull ghcr.io/USERNAME/REPO:v1.0.0
+   docker pull ghcr.io/vaenow/graphiti-mcp:v1.0.0
    ```
 
 ### Cleanup and Restart
@@ -270,7 +270,7 @@ docker run -d \
   -p 7687:7687 \
   -p 8000:8000 \
   -e OPENAI_API_KEY=your_openai_api_key_here \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### Data Backup

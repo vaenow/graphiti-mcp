@@ -4,8 +4,8 @@
 
 **中文** | [English](README.md)
 
-[![Docker Build](https://github.com/USERNAME/REPO/actions/workflows/docker-build.yml/badge.svg)](https://github.com/USERNAME/REPO/actions/workflows/docker-build.yml)
-[![Docker Image](https://img.shields.io/badge/docker-ghcr.io-blue.svg)](https://ghcr.io/USERNAME/REPO)
+[![Docker Build](https://github.com/vaenow/graphiti-mcp/actions/workflows/docker-build.yml/badge.svg)](https://github.com/vaenow/graphiti-mcp/actions/workflows/docker-build.yml)
+[![Docker Image](https://img.shields.io/badge/docker-ghcr.io-blue.svg)](https://ghcr.io/vaenow/graphiti-mcp)
 
 ## 📋 前置要求
 
@@ -29,7 +29,7 @@ docker run -d \
   -p 7687:7687 \
   -p 8000:8000 \
   -e OPENAI_API_KEY=$OPENAI_API_KEY \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### 方案二：从源码构建
@@ -66,9 +66,9 @@ docker run -d \
 
 我们自动构建并发布多架构 Docker 镜像到 GitHub Container Registry：
 
-- **最新稳定版**: `ghcr.io/USERNAME/REPO:latest`
-- **指定版本**: `ghcr.io/USERNAME/REPO:v1.0.0`
-- **开发版**: `ghcr.io/USERNAME/REPO:main`
+- **最新稳定版**: `ghcr.io/vaenow/graphiti-mcp:latest`
+- **指定版本**: `ghcr.io/vaenow/graphiti-mcp:v1.0.0`
+- **开发版**: `ghcr.io/vaenow/graphiti-mcp:main`
 
 ### 支持的架构
 - `linux/amd64` (x86_64)
@@ -110,7 +110,7 @@ docker run -d \
   -p 7687:7687 \
   -p 8000:8000 \
   -e OPENAI_API_KEY=your_openai_api_key_here \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### 开发模式（挂载代码目录）
@@ -122,7 +122,7 @@ docker run -d \
   -p 8000:8000 \
   -v $(pwd):/app \
   -e OPENAI_API_KEY=your_openai_api_key_here \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### 数据持久化
@@ -135,7 +135,7 @@ docker run -d \
   -v graphiti_data:/var/lib/neo4j/data \
   -v graphiti_logs:/var/lib/neo4j/logs \
   -e OPENAI_API_KEY=your_openai_api_key_here \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### 生产环境部署（Docker Compose）
@@ -143,7 +143,7 @@ docker run -d \
 version: '3.8'
 services:
   graphiti:
-    image: ghcr.io/USERNAME/REPO:latest
+    image: ghcr.io/vaenow/graphiti-mcp:latest
     container_name: graphiti-app
     ports:
       - "7474:7474"
@@ -197,7 +197,7 @@ docker ps
      -p 8000:8000 \
      -v $(pwd)/neo4j.conf:/etc/neo4j/neo4j.conf \
      -e OPENAI_API_KEY=your_openai_api_key_here \
-     ghcr.io/USERNAME/REPO:latest
+     ghcr.io/vaenow/graphiti-mcp:latest
    ```
 
 ### 应用代码
@@ -221,7 +221,7 @@ docker run -d \
   -e NEO4J_dbms_memory_pagecache_size=2G \
   -e NEO4J_dbms_memory_heap_initial__size=2G \
   -e NEO4J_dbms_memory_heap_max__size=2G \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ## 🔍 故障排除
@@ -247,10 +247,10 @@ docker run -d \
 4. **镜像拉取错误**
    ```bash
    # 尝试显式拉取镜像
-   docker pull ghcr.io/USERNAME/REPO:latest
+   docker pull ghcr.io/vaenow/graphiti-mcp:latest
    
    # 或使用指定版本
-   docker pull ghcr.io/USERNAME/REPO:v1.0.0
+   docker pull ghcr.io/vaenow/graphiti-mcp:v1.0.0
    ```
 
 ### 清理和重启
@@ -270,7 +270,7 @@ docker run -d \
   -p 7687:7687 \
   -p 8000:8000 \
   -e OPENAI_API_KEY=your_openai_api_key_here \
-  ghcr.io/USERNAME/REPO:latest
+  ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### 数据备份

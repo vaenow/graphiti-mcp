@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   graphiti:
-    image: ghcr.io/USERNAME/REPO:latest
+    image: ghcr.io/vaenow/graphiti-mcp:latest
     container_name: graphiti-app
     ports:
       - "7474:7474"   # Neo4j HTTP interface
