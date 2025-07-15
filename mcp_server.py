@@ -383,10 +383,7 @@ async def main():
             InitializationOptions(
                 server_name="graphiti-mcp",
                 server_version="1.0.0",
-                capabilities=server.get_capabilities(
-                    notification_options=None,
-                    experimental_capabilities=None,
-                ),
+                capabilities=server.get_capabilities(),
             ),
         )
 
