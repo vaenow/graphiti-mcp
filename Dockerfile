@@ -36,12 +36,11 @@ RUN mkdir -p /var/lib/neo4j/data /var/lib/neo4j/logs /var/lib/neo4j/import /var/
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 复制启动脚本并设置权限
-COPY start.sh /app/start.sh
-RUN chmod +x /app/start.sh
-
 # 复制应用代码
 COPY . .
+
+# 设置启动脚本权限
+RUN chmod +x /app/start.sh
 
 # 暴露端口
 EXPOSE 7474 7687 8000
