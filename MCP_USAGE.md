@@ -41,14 +41,11 @@ python mcp_server.py
 
 **环境变量配置:**
 ```bash
-# 重置 Neo4j 数据 (开发环境)
+# 重置 Neo4j 数据和密码 (开发环境)
 export RESET_NEO4J=true
 
-# 自定义 Neo4j 密码
+# 自定义 Neo4j 密码（首次启动时生效）
 export NEO4J_PASSWORD=your_password
-
-# 强制重置密码以确保一致性
-export FORCE_PASSWORD_RESET=true
 
 # 启动脚本
 ./start.sh
@@ -60,17 +57,19 @@ export FORCE_PASSWORD_RESET=true
 如果遇到 `The client is unauthorized due to authentication failure` 错误：
 
 ```bash
-# 方法1: 强制重置密码
-export FORCE_PASSWORD_RESET=true
+# 推荐方案：重置 Neo4j 数据（会清空所有数据）
+export RESET_NEO4J=true
 ./start.sh
 
-# 方法2: 完全重置 Neo4j 数据
-export RESET_NEO4J=true  
-./start.sh
+# Docker 环境中
+docker run -e RESET_NEO4J=true ghcr.io/vaenow/graphiti-mcp:latest
 
-# 方法3: 在 Docker 中设置环境变量
-docker run -e FORCE_PASSWORD_RESET=true ghcr.io/vaenow/graphiti-mcp:latest
+# Kubernetes 环境中
+kubectl set env statefulset/graphiti-mcp RESET_NEO4J=true -n vin
+kubectl rollout restart statefulset/graphiti-mcp -n vin
 ```
+
+> **⚠️ 注意**: `RESET_NEO4J=true` 会删除所有现有数据，仅在开发环境或确定要清空数据时使用。
 
 ### 2. 验证服务状态
 

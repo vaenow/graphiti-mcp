@@ -54,10 +54,20 @@ async def get_graphiti() -> Graphiti:
             logger.info("✅ Graphiti 实例已成功初始化")
         except Exception as e:
             logger.error(f"❌ Graphiti 初始化失败: {e}")
-            logger.error(f"连接参数 - URI: {neo4j_uri}, 用户: {neo4j_user}, 密码长度: {len(neo4j_password)}")
-            # 尝试重新连接前等待一下
-            import asyncio
-            await asyncio.sleep(5)
+            
+            # 如果是认证失败，提供清晰的解决方案
+            if "unauthorized" in str(e).lower() or "authentication" in str(e).lower():
+                logger.error("")
+                logger.error("🔧 认证失败！这通常是因为密码不匹配造成的。")
+                logger.error("💡 解决方案：设置 RESET_NEO4J=true 来重置数据和密码")
+                logger.error("")
+                logger.error("📝 具体步骤:")
+                logger.error("   • Docker: docker run -e RESET_NEO4J=true <image>")
+                logger.error("   • Docker Compose: 在 docker-compose.yml 中添加 RESET_NEO4J=true")
+                logger.error("   • Kubernetes: kubectl set env statefulset/graphiti-mcp RESET_NEO4J=true -n vin")
+                logger.error("")
+                logger.error("⚠️  注意：这会清空所有现有数据")
+            
             raise
     
     return graphiti_instance
