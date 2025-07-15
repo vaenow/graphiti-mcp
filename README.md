@@ -1,6 +1,6 @@
-# Graphiti Docker Deployment Guide
+# Graphiti MCP Server Docker Deployment Guide
 
-A comprehensive Docker deployment solution for [Graphiti](https://github.com/getzep/graphiti) knowledge graphs, including Neo4j database and Graphiti application in a containerized environment.
+A comprehensive Docker deployment solution for [Graphiti](https://github.com/getzep/graphiti) knowledge graphs with **Model Context Protocol (MCP) server**, including Neo4j database and Graphiti MCP server in a containerized environment.
 
 [中文文档](README-CN.md) | **English**
 
@@ -24,7 +24,7 @@ export OPENAI_API_KEY=your_openai_api_key_here
 
 # 2. Run with pre-built image
 docker run -d \
-  --name graphiti-app \
+  --name graphiti-mcp-server \
   -p 7474:7474 \
   -p 7687:7687 \
   -p 8000:8000 \
@@ -60,7 +60,8 @@ docker run -d \
 
 ### Access Services
 - Neo4j Browser: http://localhost:7474 (Username: neo4j, Password: password)
-- Application logs: `docker logs -f graphiti-app`
+- MCP Server logs: `docker logs -f graphiti-mcp-server`
+- **MCP Client Connection**: Connect to `stdio` using command: `python mcp_server.py`
 
 ## 📦 Pre-built Images
 
@@ -93,6 +94,32 @@ We automatically build and publish multi-architecture Docker images to GitHub Co
 | `NEO4J_PASSWORD` | Neo4j password | `password` |
 | `USE_PARALLEL_RUNTIME` | Enable Neo4j parallel runtime | `false` |
 | `GRAPHITI_TELEMETRY_ENABLED` | Enable telemetry | `true` |
+
+### MCP Client Configuration
+
+For **Claude Desktop**, add to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "graphiti": {
+      "command": "python",
+      "args": ["/path/to/graphiti-mcp/mcp_server.py"],
+      "env": {
+        "OPENAI_API_KEY": "your_openai_api_key_here",
+        "NEO4J_URI": "bolt://localhost:7687",
+        "NEO4J_USER": "neo4j",
+        "NEO4J_PASSWORD": "password"
+      }
+    }
+  }
+}
+```
+
+For **Cursor IDE**, add to your MCP settings:
+- **Name**: Graphiti Knowledge Graph  
+- **Type**: stdio
+- **Command**: `python /path/to/graphiti-mcp/mcp_server.py`
 
 ### Ports
 
@@ -290,9 +317,26 @@ This Docker deployment includes:
 - **Neo4j 5.26**: Graph database backend
 - **Python 3.11**: Runtime environment
 - **Graphiti Core**: Knowledge graph framework
+- **MCP Server**: Model Context Protocol server implementation
 - **Example Application**: Ready-to-run Graphiti demo with sample data
 - **Health Checks**: Container monitoring and status verification
 - **Data Persistence**: Volume mounting for data preservation
+
+## 🛠️ MCP Tools Available
+
+The Graphiti MCP server provides the following tools:
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `add_episode` | 向知识图谱添加新片段 | `name`, `content`, `episode_type`, `source_description` |
+| `search_graph` | 搜索知识图谱中的信息 | `query`, `limit` |
+| `get_entities` | 获取知识图谱中的实体信息 | `entity_name` (optional), `limit` |
+| `get_communities` | 获取知识图谱中的社区信息 | `limit` |
+
+### MCP Resources
+
+- `graphiti://graph/schema` - 知识图谱架构信息
+- `graphiti://graph/stats` - 图谱统计信息
 
 ## 🚀 CI/CD Pipeline
 
