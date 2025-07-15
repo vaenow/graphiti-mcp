@@ -244,7 +244,27 @@ docker run -d \
    - 确认 API Key 设置正确
    - 检查网络连接
 
-4. **镜像拉取错误**
+4. **Neo4j 认证速率限制**
+   如果看到错误：`The client has provided incorrect authentication details too many times in a row`
+   ```bash
+   # 重置 Neo4j 数据和密码
+   docker run -d \
+     --name graphiti-app \
+     -p 7474:7474 \
+     -p 7687:7687 \
+     -p 8000:8000 \
+     -e OPENAI_API_KEY=your_openai_api_key_here \
+     -e RESET_NEO4J=true \
+     ghcr.io/vaenow/graphiti-mcp:latest
+   ```
+   
+   或使用 docker-compose：
+   ```yaml
+   environment:
+     - RESET_NEO4J=true  # 添加此行以重置
+   ```
+
+5. **镜像拉取错误**
    ```bash
    # 尝试显式拉取镜像
    docker pull ghcr.io/vaenow/graphiti-mcp:latest

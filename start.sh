@@ -6,6 +6,9 @@ if [ "$RESET_NEO4J" = "true" ]; then
     echo "Resetting Neo4j data..."
     rm -rf /var/lib/neo4j/data/databases/
     rm -rf /var/lib/neo4j/data/transactions/
+    # 清除认证相关的缓存和锁定文件
+    rm -rf /var/lib/neo4j/data/dbms/
+    rm -f /var/lib/neo4j/data/.neo4j_initialized
 fi
 
 # 设置 Neo4j 初始密码
@@ -15,9 +18,15 @@ if [ ! -f /var/lib/neo4j/data/.neo4j_initialized ]; then
     neo4j-admin dbms set-initial-password ${NEO4J_PASSWORD:-password}
     touch /var/lib/neo4j/data/.neo4j_initialized
 else
-    echo "Neo4j already initialized, using existing password"
-    # 简单策略：如果已经初始化，就信任现有的密码设置
-    # 如果真的需要重置，使用 RESET_NEO4J=true
+    echo "Neo4j already initialized, skipping password setup"
+    # 如果设置了强制重置标志，仍然尝试设置密码
+    if [ "$RESET_NEO4J" = "true" ]; then
+        echo "RESET_NEO4J is true, forcing password reset..."
+        neo4j-admin dbms set-initial-password ${NEO4J_PASSWORD:-password} || true
+        # 删除标记文件，以便下次能重新初始化
+        rm -f /var/lib/neo4j/data/.neo4j_initialized
+        touch /var/lib/neo4j/data/.neo4j_initialized
+    fi
 fi
 
 # 启动 Neo4j
@@ -43,7 +52,32 @@ fi
 
 # 额外等待确保 Neo4j 完全就绪
 echo "Waiting for Neo4j to be fully ready..."
-sleep 5
+sleep 10
+
+# 如果存在速率限制问题，等待更长时间
+if [ "$RESET_NEO4J" = "true" ]; then
+    echo "Reset mode: waiting extra time for Neo4j to fully initialize..."
+    sleep 10
+fi
+
+# 测试Neo4j连接（可选，用于调试）
+echo "Testing Neo4j connection..."
+max_attempts=5
+attempt=1
+while [ $attempt -le $max_attempts ]; do
+    if echo "RETURN 1;" | cypher-shell -u ${NEO4J_USER:-neo4j} -p ${NEO4J_PASSWORD:-password} 2>/dev/null; then
+        echo "✅ Neo4j connection successful!"
+        break
+    else
+        echo "⏳ Neo4j connection attempt $attempt/$max_attempts failed, waiting..."
+        if [ $attempt -eq $max_attempts ]; then
+            echo "❌ Failed to connect to Neo4j after $max_attempts attempts"
+            echo "💡 Try setting RESET_NEO4J=true to reset the database"
+        fi
+        sleep 5
+        ((attempt++))
+    fi
+done
 
 # 运行应用
 echo "Starting Graphiti MCP Server..."

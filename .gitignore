@@ -1,0 +1,14 @@
+.env
+node_modules
+.nyc_output
+.vscode
+.idea
+*.log
+/pnpm-lock.yaml
+/logs/*
+bin/t.json
+bin/t.html
+bin/t.js
+data
+.DS_Store
+bin/test-feeds-news-watch.js
