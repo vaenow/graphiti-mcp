@@ -318,9 +318,25 @@ This Docker deployment includes:
 - **Python 3.11**: Runtime environment
 - **Graphiti Core**: Knowledge graph framework
 - **MCP Server**: Model Context Protocol server implementation
+- **Start Script**: Automated startup script (`start.sh`) for Neo4j and MCP server
 - **Example Application**: Ready-to-run Graphiti demo with sample data
 - **Health Checks**: Container monitoring and status verification
 - **Data Persistence**: Volume mounting for data preservation
+
+### File Structure
+
+```
+graphiti-mcp/
+├── start.sh              # 启动脚本 (Neo4j + MCP Server)
+├── mcp_server.py          # MCP 协议服务器实现
+├── main.py                # Graphiti 示例应用
+├── requirements.txt       # Python 依赖
+├── Dockerfile             # Docker 镜像构建
+├── docker-compose.yml     # Docker Compose 配置
+├── env.example            # 环境变量示例
+├── README.md              # 项目文档
+└── MCP_USAGE.md           # MCP 使用指南
+```
 
 ## 🛠️ MCP Tools Available
 
@@ -337,6 +353,46 @@ The Graphiti MCP server provides the following tools:
 
 - `graphiti://graph/schema` - 知识图谱架构信息
 - `graphiti://graph/stats` - 图谱统计信息
+
+## 🔧 启动脚本说明
+
+`start.sh` 脚本负责自动化启动流程，包含以下功能：
+
+### 启动流程
+
+1. **数据清理** (可选)
+   - 当设置 `RESET_NEO4J=true` 时，清理旧的 Neo4j 数据
+
+2. **Neo4j 初始化**
+   - 设置初始密码 (使用 `NEO4J_PASSWORD` 环境变量)
+   - 创建初始化标记文件
+
+3. **Neo4j 启动**
+   - 启动 Neo4j 服务
+   - 等待服务就绪 (最多30秒)
+   - 验证服务状态
+
+4. **应用启动**
+   - 优先启动 `mcp_server.py` (MCP 服务器)
+   - 备选启动 `main.py` 或 `app.py`
+
+### 环境变量
+
+| 变量 | 说明 | 默认值 |
+|------|------|--------|
+| `RESET_NEO4J` | 是否重置 Neo4j 数据 | `false` |
+| `NEO4J_PASSWORD` | Neo4j 密码 | `password` |
+
+### 手动运行
+
+```bash
+# 本地运行启动脚本
+chmod +x start.sh
+./start.sh
+
+# 或在容器中运行
+docker exec -it graphiti-mcp-server ./start.sh
+```
 
 ## 🚀 CI/CD Pipeline
 

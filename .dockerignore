@@ -5,6 +5,14 @@
 # Documentation
 README.md
 *.md
+!MCP_USAGE.md
+
+# Include essential files
+!start.sh
+!mcp_server.py
+!main.py
+!requirements.txt
+!env.example
 
 # Docker
 Dockerfile*

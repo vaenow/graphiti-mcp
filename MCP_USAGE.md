@@ -18,8 +18,37 @@
 # 使用 Docker Compose
 docker-compose up -d
 
-# 或直接运行 MCP 服务器
+# 或直接运行启动脚本 (推荐)
+chmod +x start.sh
+./start.sh
+
+# 或仅运行 MCP 服务器 (需要 Neo4j 已启动)
 python mcp_server.py
+```
+
+### 启动脚本说明
+
+`start.sh` 脚本会自动完成以下操作：
+
+1. **Neo4j 初始化和启动**
+   - 设置初始密码
+   - 启动 Neo4j 服务
+   - 等待服务就绪
+
+2. **MCP 服务器启动**  
+   - 启动 Graphiti MCP 服务器
+   - 等待客户端连接
+
+**环境变量配置:**
+```bash
+# 重置 Neo4j 数据 (开发环境)
+export RESET_NEO4J=true
+
+# 自定义 Neo4j 密码
+export NEO4J_PASSWORD=your_password
+
+# 启动脚本
+./start.sh
 ```
 
 ### 2. 验证服务状态
