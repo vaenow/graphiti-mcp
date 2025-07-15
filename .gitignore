@@ -12,3 +12,4 @@ bin/t.js
 data
 .DS_Store
 bin/test-feeds-news-watch.js
+__pycache__/

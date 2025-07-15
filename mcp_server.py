@@ -17,6 +17,7 @@ from graphiti_core.nodes import EpisodeType
 from mcp.server import Server
 from mcp.server.models import InitializationOptions
 from mcp.server.stdio import stdio_server
+from mcp.server.lowlevel import NotificationOptions
 from mcp.types import (
     Resource,
     Tool,
@@ -383,7 +384,10 @@ async def main():
             InitializationOptions(
                 server_name="graphiti-mcp",
                 server_version="1.0.0",
-                capabilities=server.get_capabilities(),
+                capabilities=server.get_capabilities(
+                    notification_options=NotificationOptions(),
+                    experimental_capabilities={}
+                ),
             ),
         )
 
