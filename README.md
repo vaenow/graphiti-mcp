@@ -382,6 +382,7 @@ The Graphiti MCP server provides the following tools:
 |------|------|--------|
 | `RESET_NEO4J` | 是否重置 Neo4j 数据 | `false` |
 | `NEO4J_PASSWORD` | Neo4j 密码 | `password` |
+| `FORCE_PASSWORD_RESET` | 强制重置 Neo4j 密码 | `false` |
 
 ### 手动运行
 

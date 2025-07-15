@@ -11,10 +11,22 @@ fi
 # 设置 Neo4j 初始密码
 echo "Setting up Neo4j initial password..."
 if [ ! -f /var/lib/neo4j/data/.neo4j_initialized ]; then
+    echo "First time setup: setting initial password..."
     neo4j-admin dbms set-initial-password ${NEO4J_PASSWORD:-password}
     touch /var/lib/neo4j/data/.neo4j_initialized
 else
-    echo "Neo4j already initialized, skipping password setup"
+    echo "Neo4j already initialized. Ensuring password consistency..."
+    # 如果 Neo4j 已经初始化，我们需要重置密码
+    # 先删除现有数据以确保一致的密码设置
+    if [ "$FORCE_PASSWORD_RESET" = "true" ] || [ ! -f /var/lib/neo4j/data/.password_synced ]; then
+        echo "Resetting Neo4j password for consistency..."
+        rm -rf /var/lib/neo4j/data/databases/
+        rm -rf /var/lib/neo4j/data/transactions/
+        rm -f /var/lib/neo4j/data/.neo4j_initialized
+        neo4j-admin dbms set-initial-password ${NEO4J_PASSWORD:-password}
+        touch /var/lib/neo4j/data/.neo4j_initialized
+        touch /var/lib/neo4j/data/.password_synced
+    fi
 fi
 
 # 启动 Neo4j

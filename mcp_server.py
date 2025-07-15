@@ -46,9 +46,19 @@ async def get_graphiti() -> Graphiti:
         neo4j_user = os.environ.get('NEO4J_USER', 'neo4j')
         neo4j_password = os.environ.get('NEO4J_PASSWORD', 'password')
         
-        graphiti_instance = Graphiti(neo4j_uri, neo4j_user, neo4j_password)
-        await graphiti_instance.build_indices_and_constraints()
-        logger.info("Graphiti 实例已初始化")
+        logger.info(f"连接 Neo4j: {neo4j_uri}, 用户: {neo4j_user}")
+        
+        try:
+            graphiti_instance = Graphiti(neo4j_uri, neo4j_user, neo4j_password)
+            await graphiti_instance.build_indices_and_constraints()
+            logger.info("✅ Graphiti 实例已成功初始化")
+        except Exception as e:
+            logger.error(f"❌ Graphiti 初始化失败: {e}")
+            logger.error(f"连接参数 - URI: {neo4j_uri}, 用户: {neo4j_user}, 密码长度: {len(neo4j_password)}")
+            # 尝试重新连接前等待一下
+            import asyncio
+            await asyncio.sleep(5)
+            raise
     
     return graphiti_instance
 

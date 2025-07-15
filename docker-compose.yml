@@ -15,6 +15,7 @@ services:
       - NEO4J_PASSWORD=password
       - USE_PARALLEL_RUNTIME=false
       - GRAPHITI_TELEMETRY_ENABLED=true
+      - FORCE_PASSWORD_RESET=true  # 确保密码一致性
     volumes:
       - graphiti_data:/var/lib/neo4j/data
       - graphiti_logs:/var/lib/neo4j/logs

@@ -47,8 +47,29 @@ export RESET_NEO4J=true
 # 自定义 Neo4j 密码
 export NEO4J_PASSWORD=your_password
 
+# 强制重置密码以确保一致性
+export FORCE_PASSWORD_RESET=true
+
 # 启动脚本
 ./start.sh
+```
+
+### 常见问题解决
+
+#### 认证失败问题
+如果遇到 `The client is unauthorized due to authentication failure` 错误：
+
+```bash
+# 方法1: 强制重置密码
+export FORCE_PASSWORD_RESET=true
+./start.sh
+
+# 方法2: 完全重置 Neo4j 数据
+export RESET_NEO4J=true  
+./start.sh
+
+# 方法3: 在 Docker 中设置环境变量
+docker run -e FORCE_PASSWORD_RESET=true ghcr.io/vaenow/graphiti-mcp:latest
 ```
 
 ### 2. 验证服务状态
